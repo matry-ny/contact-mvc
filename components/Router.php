@@ -82,10 +82,10 @@ final class Router
     {
         $nameParts = explode('-', $name);
         array_walk($nameParts, function (&$part) {
-            $part = ucfirst($part);
+            $part = ucfirst(strtolower($part));
         });
 
-        return ucfirst(implode($nameParts));
+        return implode($nameParts);
     }
 
     /**
