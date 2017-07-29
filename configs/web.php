@@ -3,7 +3,7 @@
 $baseDir = dirname(__DIR__);
 
 return [
-    'baseUrl' => '/contact-form',
+    'baseUrl' => '/contact-mvc',
     'db' => [
         'host' => 'localhost',
         'name' => 'contact_form',

@@ -51,7 +51,8 @@ class MapAutoloader
         $classRout = $this->rout . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
 
         if (array_key_exists($class, $this->classesMap) || $this->registerClass($class, $classRout)) {
-            return require_once($this->classesMap[$class]);
+            require_once($this->classesMap[$class]);
+            return class_exists($class);
         }
 
         return false;
