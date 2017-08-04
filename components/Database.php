@@ -4,6 +4,10 @@ namespace components;
 
 use PDO;
 
+/**
+ * Class Database
+ * @package components\
+ */
 class Database
 {
     /** @var PDO  */

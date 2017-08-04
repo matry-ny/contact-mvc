@@ -2,7 +2,10 @@
 
 namespace components;
 
-
+/**
+ * Class Model
+ * @package components
+ */
 abstract class Model
 {
     /**
@@ -43,7 +46,7 @@ abstract class Model
      */
     public function getDbConnect()
     {
-        return Application::get('db')->getConnection();
+        return Registry::get('db')->getConnection();
     }
 
     /**
@@ -58,13 +61,23 @@ abstract class Model
     }
 
     /**
-     * @param $id
+     * @param array|int $condition
      * @return $this
      */
-    protected function find($id)
+    public function find($condition)
     {
-        $stmt = $this->getDbConnect()->prepare("SELECT * FROM {$this->table} WHERE {$this->primaryKey} = ?");
-        $stmt->execute([$id]);
+        if (is_array($condition)) {
+            $query = "SELECT * FROM {$this->table} WHERE ";
+            foreach (array_keys($condition) as $key) {
+                $query .= "{$key} = ? ";
+            }
+
+            $stmt = $this->getDbConnect()->prepare(trim($query));
+            $stmt->execute(array_values($condition));
+        } else {
+            $stmt = $this->getDbConnect()->prepare("SELECT * FROM {$this->table} WHERE {$this->primaryKey} = ?");
+            $stmt->execute([$condition]);
+        }
 
         $this->load($stmt->fetch(\PDO::FETCH_ASSOC));
         return $this;
@@ -126,5 +139,63 @@ abstract class Model
     protected function update()
     {
 
+    }
+
+    /**
+     * @param $queryString
+     * @return array
+     */
+    protected function query($queryString)
+    {
+        $result = [];
+        foreach ($this->getDbConnect()->query($queryString, \PDO::FETCH_ASSOC) as $row) {
+            $result[] = $row;
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsTableExists()
+    {
+        return (bool)$this->query("SHOW TABLES LIKE '{$this->table}'");
+    }
+
+    /**
+     * @param string $name
+     * @param array $columns
+     * @param null $options
+     * @return bool
+     */
+    public function createTable($name, array $columns, $options = null)
+    {
+        $columnsString = implode(',', $columns);
+        return (bool)$this->query("CREATE TABLE {$name} ({$columnsString}) {$options}");
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function dropTable($name)
+    {
+        return (bool)$this->query("DROP TABLE {$name}");
+    }
+
+    /**
+     * @param array $condition
+     * @return bool
+     */
+    public function delete(array $condition)
+    {
+        $query = "DELETE FROM {$this->table} WHERE ";
+        foreach (array_keys($condition) as $key) {
+            $query .= "{$key} = ? ";
+        }
+
+        $stmt = $this->getDbConnect()->prepare(trim($query));
+        return $stmt->execute(array_values($condition));
     }
 }

@@ -1,12 +1,12 @@
 <?php
 
-namespace controllers;
+namespace web\controllers;
 
 use components\web\Controller;
 
 /**
  * Class IndexController
- * @package controllers
+ * @package web\controllers
  */
 class IndexController extends Controller
 {

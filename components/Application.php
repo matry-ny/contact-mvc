@@ -2,37 +2,49 @@
 
 namespace components;
 
+use helpers\Config;
+use components\console\Dispatcher as ConsoleDispatcher;
+use components\web\Dispatcher as WebDispatcher;
+
 /**
  * Class Application
  * @package components
  */
-class Application
+abstract class Application
 {
-    /**
-     * @var array
-     */
-    private static $elements = [];
+    const WEB = 'WEB';
+    const CONSOLE = 'CONSOLE';
 
     /**
-     * @param string $key
-     * @param mixed $value
+     * Application constructor.
+     * @param array $config
      */
-    public static function set($key, $value)
+    public function __construct(array $config)
     {
-        self::$elements[$key] = $value;
+        Config::getInstance()->set($config);
+
+        Registry::set('db', new Database(
+            Config::getInstance()->get('db.host'),
+            Config::getInstance()->get('db.user'),
+            Config::getInstance()->get('db.password'),
+            Config::getInstance()->get('db.name')
+        ));
     }
 
-    /**
-     * @param string $key
-     * @return mixed
-     * @throws \Exception
-     */
-    public static function get($key)
+    public function run()
     {
-        if (array_key_exists($key, self::$elements)) {
-            return self::$elements[$key];
+        try {
+            $dispatcher = APP_TYPE == self::WEB ? new WebDispatcher() : new ConsoleDispatcher();
+            $answer = (new Router($dispatcher))->run();
+            if (is_string($answer)) {
+                echo $answer;
+            } else {
+                throw new \Exception('Unexpected data processed');
+            }
+        } catch (\Exception $exception) {
+            echo $exception->getMessage();
         }
 
-        throw new \Exception("Element '{$key}' is not registered");
+        exit;
     }
 }

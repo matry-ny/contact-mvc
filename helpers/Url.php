@@ -1,14 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: 32
- * Date: 24.07.2017
- * Time: 20:54
- */
 
 namespace helpers;
 
-
+/**
+ * Class Url
+ * @package helpers
+ */
 class Url
 {
     /**
@@ -24,6 +21,21 @@ class Url
                 trim($baseUrl, " \t\n\r\0\x0B/"),
                 trim($url, " \t\n\r\0\x0B/")
             ]);
+        }
+
+        return $url;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getClearAddress()
+    {
+        $url = $_SERVER["REQUEST_URI"];
+        $baseUrl = Config::getInstance()->get('baseUrl');
+
+        if (strpos($url, $baseUrl) === 0) {
+            $url = substr($url, strlen($baseUrl));
         }
 
         return $url;

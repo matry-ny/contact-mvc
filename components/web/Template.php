@@ -2,7 +2,7 @@
 
 namespace components\web;
 
-use components\Application;
+use helpers\Config;
 
 /**
  * Class Template
@@ -23,9 +23,7 @@ class Template
      */
     public function render($template, array $variables = [])
     {
-        /** @var \helpers\Config $config */
-        $config = Application::get('config');
-        $templateRout = $config->get('template.templatesDir') . '/' . $template . '.php';
+        $templateRout = Config::getInstance()->get('template.templatesDir') . '/' . $template . '.php';
         if (!file_exists($templateRout)) {
             throw new \Exception("Template '{$template}' is not exists");
         }
@@ -35,7 +33,7 @@ class Template
         require_once $templateRout;
         $content = ob_get_clean();
 
-        $layoutRout = $config->get('template.layoutDir') . '/' . $this->layout . '.php';
+        $layoutRout = Config::getInstance()->get('template.layoutDir') . '/' . $this->layout . '.php';
         if (!file_exists($layoutRout)) {
             throw new \Exception("Layout '{$this->layout}' is not exists");
         }
