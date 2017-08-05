@@ -34,7 +34,7 @@ class Migration extends Model
     public function isMigrationFileExists($name)
     {
         $migrations = Files::getDirectoryContent(Config::getInstance()->get('migrationsDir'));
-        $pattern ="/^{$name}_[0-9]+\\.php$/";
+        $pattern ="/^m[0-9]+_{$name}\\.php$/";
         foreach ($migrations as $migration) {
             preg_match($pattern, $migration, $matches);
             if ($matches) {
@@ -51,7 +51,7 @@ class Migration extends Model
      */
     public function createMigrationFile($name)
     {
-        $className = $name . '_' . time();
+        $className = 'm' . time() . '_' . $name;
         $content = <<<PHP
 <?php
 

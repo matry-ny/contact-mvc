@@ -67,12 +67,15 @@ abstract class Model
     public function find($condition)
     {
         if (is_array($condition)) {
-            $query = "SELECT * FROM {$this->table} WHERE ";
-            foreach (array_keys($condition) as $key) {
-                $query .= "{$key} = ? ";
+            $query = "SELECT * FROM {$this->table}";
+            if ($condition) {
+                $query .= ' WHERE';
+                foreach (array_keys($condition) as $key) {
+                    $query .= " {$key} = ?";
+                }
             }
 
-            $stmt = $this->getDbConnect()->prepare(trim($query));
+            $stmt = $this->getDbConnect()->prepare($query);
             $stmt->execute(array_values($condition));
         } else {
             $stmt = $this->getDbConnect()->prepare("SELECT * FROM {$this->table} WHERE {$this->primaryKey} = ?");
@@ -188,14 +191,17 @@ abstract class Model
      * @param array $condition
      * @return bool
      */
-    public function delete(array $condition)
+    public function delete(array $condition = [])
     {
-        $query = "DELETE FROM {$this->table} WHERE ";
-        foreach (array_keys($condition) as $key) {
-            $query .= "{$key} = ? ";
+        $query = "DELETE FROM {$this->table}";
+        if ($condition) {
+            $query .= ' WHERE';
+            foreach (array_keys($condition) as $key) {
+                $query .= " {$key} = ?";
+            }
         }
 
-        $stmt = $this->getDbConnect()->prepare(trim($query));
+        $stmt = $this->getDbConnect()->prepare($query);
         return $stmt->execute(array_values($condition));
     }
 }

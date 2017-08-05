@@ -99,11 +99,6 @@ class MigrateController extends Controller
         foreach ($deprecatedMigrations as $migration) {
             $this->printOut("{$migration}...");
 
-            $migrationName = preg_replace("/_[0-9]+\\.php$/", '', $migration);
-            if (!$model->isMigrationFileExists($migrationName)) {
-                throw new \Exception("Migration '{$migration}' is not exists");
-            }
-
             $migrationClass = vsprintf('console\\migrations\\%s', [
                 substr($migration, -4) == '.php' ? substr($migration, 0, -4) : $migration
             ]);

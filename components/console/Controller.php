@@ -28,10 +28,9 @@ class Controller extends \components\Controller
 
     /**
      * @param string $string
-     * @return string
      */
     public function printOut($string)
     {
-        return $string . PHP_EOL;
+        echo $string . PHP_EOL;
     }
 }
