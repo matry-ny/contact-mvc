@@ -3,6 +3,7 @@
 namespace web\controllers;
 
 use components\web\Controller;
+use models\Comment;
 
 /**
  * Class CommentsController
@@ -12,10 +13,11 @@ class CommentsController extends Controller
 {
     public function actionCreate()
     {
-//        $this->getModel()->load($_POST);
-//        $this->getModel()->save();
-//
-//        var_dump($this->getModel());
+        $model = new Comment();
+        $model->load($_POST);
+        $model->save();
+
+        return 'Saved';
     }
 
 }

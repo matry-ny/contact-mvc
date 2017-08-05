@@ -33,12 +33,21 @@ abstract class Model
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @return bool
      */
     public function __isset($name)
     {
         return array_key_exists($name, $this->attributes);
+    }
+
+    /**
+     * @param string $name
+     * @return mixed|null
+     */
+    public function __get($name)
+    {
+        return isset($this->{$name}) ? $this->attributes[$name] : null;
     }
 
     /**
@@ -61,8 +70,8 @@ abstract class Model
     }
 
     /**
-     * @param array|int $condition
-     * @return $this
+     * @param array|int|string $condition
+     * @return array|Model
      */
     public function find($condition)
     {
@@ -77,12 +86,20 @@ abstract class Model
 
             $stmt = $this->getDbConnect()->prepare($query);
             $stmt->execute(array_values($condition));
-        } else {
-            $stmt = $this->getDbConnect()->prepare("SELECT * FROM {$this->table} WHERE {$this->primaryKey} = ?");
-            $stmt->execute([$condition]);
+            $result = [];
+            foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+                $model = new static();
+                $model->load($row);
+                $result[] = $model;
+            }
+
+            return $result;
         }
 
+        $stmt = $this->getDbConnect()->prepare("SELECT * FROM {$this->table} WHERE {$this->primaryKey} = ?");
+        $stmt->execute([$condition]);
         $this->load($stmt->fetch(\PDO::FETCH_ASSOC));
+
         return $this;
     }
 

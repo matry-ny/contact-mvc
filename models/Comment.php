@@ -7,6 +7,12 @@ use components\Model;
 /**
  * Class Comment
  * @package models
+ *
+ * @property int $id
+ * @property string $user_name
+ * @property string $comment
+ * @property string $created_at
+ * @property string $updated_at
  */
 class Comment extends Model
 {

@@ -14,15 +14,8 @@ class IndexController extends Controller
     public function actionIndex()
     {
         $model = new Comment();
-        $model->load([
-            'user_name' => 'QQ',
-            'comment' => 'Some comment'
-        ]);
-        $model->save();
-        exit;
 
-
-        return $this->render('index');
+        return $this->render('index', ['records' => $model->find([])]);
     }
 
     public function action404()
