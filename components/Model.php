@@ -124,11 +124,7 @@ abstract class Model
         $aliasesString = implode(', ', $aliases);
         $stmt = $this->getDbConnect()->prepare("INSERT INTO {$this->table} ($columnsString) VALUES ($aliasesString)");
 
-        foreach ($values as $alias => $data) {
-            $stmt->bindParam($alias, $data);
-        }
-
-        $isCorrect = $stmt->execute();
+        $isCorrect = $stmt->execute($values);
         if ($isCorrect) {
             $this->find($this->getDbConnect()->lastInsertId());
         }
