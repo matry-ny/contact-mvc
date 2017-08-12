@@ -30,5 +30,6 @@ use helpers\Url;
 
     <div class="form-group">
         <input type="submit" class="btn btn-success" value="Submit">
+        <a href="<?= Url::prepare("/comments/delete/id/{$comment->id}") ?>" class="btn btn-danger">Delete</a>
     </div>
 </form>

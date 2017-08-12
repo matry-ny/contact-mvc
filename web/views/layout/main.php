@@ -1,11 +1,15 @@
 <?php
 
+use components\Registry;
 use helpers\Bootstrap;
 use helpers\Url;
 
 /**
  * @var string $content
  */
+
+/** @var \components\Session $session */
+$session = Registry::get('session');
 
 ?>
 <html>
@@ -27,6 +31,17 @@ use helpers\Url;
             </ul>
         </nav>
     </div>
+
+    <?php if ($session->hasFlash('success')) : ?>
+        <div class="alert alert-success" role="alert">
+            <?= $session->getFlash('success') ?>
+        </div>
+    <?php endif; ?>
+    <?php if ($session->hasFlash('error')) : ?>
+        <div class="alert alert-danger" role="alert">
+            <?= $session->getFlash('error') ?>
+        </div>
+    <?php endif; ?>
 
     <?= $content ?>
 

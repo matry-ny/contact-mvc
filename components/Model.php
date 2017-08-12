@@ -247,6 +247,9 @@ abstract class Model
             foreach (array_keys($condition) as $key) {
                 $query .= " {$key} = ?";
             }
+        } else {
+            $query .= " WHERE {$this->primaryKey} = ? LIMIT 1";
+            $condition[$this->primaryKey] = $this->{$this->primaryKey};
         }
 
         $stmt = $this->getDbConnect()->prepare($query);

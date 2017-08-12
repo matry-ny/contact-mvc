@@ -3,6 +3,7 @@
 namespace components\web;
 
 use components\Registry;
+use components\Session;
 
 /**
  * Class Application
@@ -19,5 +20,6 @@ class Application extends \components\Application
     private function setUp()
     {
         Registry::set('template', (new Template()));
+        Registry::set('session', (new Session()));
     }
 }

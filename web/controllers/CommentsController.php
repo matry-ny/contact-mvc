@@ -16,9 +16,13 @@ class CommentsController extends Controller
     {
         $model = new Comment();
         $model->load($_POST);
-        $model->save();
+        if ($model->save()) {
+            $this->getSession()->addFlash('success', "Comment #{$model->id} has been created successfully");
+        } else {
+            $this->getSession()->addFlash('error', "Comment can not be created");
+        }
 
-        return 'Saved';
+        $this->redirect('/');
     }
 
     /**
@@ -32,14 +36,36 @@ class CommentsController extends Controller
         ]);
     }
 
+    /**
+     * @param int $id
+     */
     public function actionUpdate($id)
     {
         $model = $this->getModel($id);
         $model->load($_POST);
 
-        $model->save();
+        if ($model->save()) {
+            $this->getSession()->addFlash('success', "Comment #{$id} has been updated successfully");
+        } else {
+            $this->getSession()->addFlash('error', "Comment #{$id} can not be updated");
+        }
 
-        $this->redirect(Url::prepare("/comments/view/id/{$id}"));
+        $this->redirect("/comments/view/id/{$id}");
+    }
+
+    /**
+     * @param int $id
+     */
+    public function actionDelete($id)
+    {
+        $model = $this->getModel($id);
+        if ($model->delete()) {
+            $this->getSession()->addFlash('success', "Comment #{$id} has been deleted successfully");
+        } else {
+            $this->getSession()->addFlash('error', "Comment #{$id} can not be deleted");
+        }
+
+        $this->redirect('/');
     }
 
     /**

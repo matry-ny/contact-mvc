@@ -3,6 +3,7 @@
 namespace components\web;
 
 use components\Registry;
+use helpers\Url;
 
 /**
  * Class Controller
@@ -35,9 +36,18 @@ abstract class Controller extends \components\Controller
      */
     protected function redirect($url, $code = 301, $terminate = true)
     {
+        $url = Url::prepare($url);
         header("Location: {$url}", true, $code);
         if ($terminate) {
             exit;
         }
+    }
+
+    /**
+     * @return \components\Session
+     */
+    protected function getSession()
+    {
+        return Registry::get('session');
     }
 }
