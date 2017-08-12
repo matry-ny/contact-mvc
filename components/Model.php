@@ -23,6 +23,11 @@ abstract class Model
      */
     protected $attributes = [];
 
+    /**
+     * @var array
+     */
+    private $oldAttributes = [];
+
     public function __set($name, $value)
     {
         if (isset($this->{$name})) {
@@ -90,6 +95,7 @@ abstract class Model
             foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
                 $model = new static();
                 $model->load($row);
+                $model->oldAttributes = $row;
                 $result[] = $model;
             }
 
@@ -98,7 +104,9 @@ abstract class Model
 
         $stmt = $this->getDbConnect()->prepare("SELECT * FROM {$this->table} WHERE {$this->primaryKey} = ?");
         $stmt->execute([$condition]);
-        $this->load($stmt->fetch(\PDO::FETCH_ASSOC));
+        $record = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $this->load($record);
+        $this->oldAttributes = $record;
 
         return $this;
     }
@@ -108,7 +116,8 @@ abstract class Model
      */
     public function save()
     {
-        if (empty($this->{$this->primaryKey})) {
+        $primaryKeyValue = $this->{$this->primaryKey};
+        if (empty($primaryKeyValue)) {
             return $this->create();
         } else {
             return $this->update();
@@ -154,7 +163,33 @@ abstract class Model
      */
     protected function update()
     {
+        $columns = [];
+        $values = [];
 
+        foreach ($this->attributes as $attribute => $value) {
+            if ($attribute == 'updated_at') {
+                $columns[] = 'updated_at = now()';
+            }
+            if ($value == $this->oldAttributes[$attribute]) {
+                continue;
+            }
+
+            $columns[] = "{$attribute} = :{$attribute}";
+            $values[":{$attribute}"] = $value;
+        }
+
+        $primaryKeyValue = $this->{$this->primaryKey};
+        $columnsString = implode(', ', $columns);
+        $query = "UPDATE {$this->table} SET {$columnsString} WHERE {$this->primaryKey} = {$primaryKeyValue} LIMIT 1";
+
+        $stmt = $this->getDbConnect()->prepare($query);
+        $isCorrect = $stmt->execute($values);
+
+        if ($isCorrect) {
+            $this->find($primaryKeyValue);
+        }
+
+        return $isCorrect;
     }
 
     /**

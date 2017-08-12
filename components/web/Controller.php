@@ -27,4 +27,17 @@ abstract class Controller extends \components\Controller
         $view = $this->getCalledController() . '/' . $view;
         return $template->render($view, $variables);
     }
+
+    /**
+     * @param string $url
+     * @param int $code
+     * @param bool $terminate
+     */
+    protected function redirect($url, $code = 301, $terminate = true)
+    {
+        header("Location: {$url}", true, $code);
+        if ($terminate) {
+            exit;
+        }
+    }
 }
