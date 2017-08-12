@@ -63,7 +63,8 @@ use components\Model;
  * Class $className
  * @package console\migrations;
  */
-class $className extends Model {
+class $className extends Model
+{
     public function up()
     {
     }
