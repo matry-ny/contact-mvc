@@ -21,6 +21,8 @@ abstract class Controller extends \components\Controller
     {
         /** @var Template $template */
         $template = Registry::get('template');
+        $template->layout = $this->getUser()->getIsGuest() ? 'guest' : 'main';
+
         if ($layout) {
             $template->layout = $layout;
         }
@@ -49,5 +51,13 @@ abstract class Controller extends \components\Controller
     protected function getSession()
     {
         return Registry::get('session');
+    }
+
+    /**
+     * @return User
+     */
+    protected function getUser()
+    {
+        return Registry::get('user');
     }
 }

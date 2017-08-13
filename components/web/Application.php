@@ -19,7 +19,8 @@ class Application extends \components\Application
 
     private function setUp()
     {
-        Registry::set('template', (new Template()));
-        Registry::set('session', (new Session()));
+        Registry::set('template', new Template());
+        Registry::set('session', new Session());
+        Registry::set('user', new User());
     }
 }

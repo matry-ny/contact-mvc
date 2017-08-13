@@ -2,8 +2,8 @@
 
 namespace web\controllers;
 
-use components\web\Controller;
 use models\Comment;
+use web\components\Controller;
 
 /**
  * Class IndexController
@@ -16,10 +16,5 @@ class IndexController extends Controller
         $model = new Comment();
 
         return $this->render('index', ['records' => $model->find([])]);
-    }
-
-    public function action404()
-    {
-        echo 404;
     }
 }

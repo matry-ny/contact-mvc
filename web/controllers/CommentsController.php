@@ -2,9 +2,8 @@
 
 namespace web\controllers;
 
-use components\web\Controller;
-use helpers\Url;
 use models\Comment;
+use web\components\Controller;
 
 /**
  * Class CommentsController

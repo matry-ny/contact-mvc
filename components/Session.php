@@ -21,11 +21,40 @@ class Session
 
     /**
      * @param string $key
+     * @param mixed $value
+     */
+    public function set($key, $value)
+    {
+        $_SESSION[$key] = $value;
+    }
+
+    /**
+     * @param string $key
+     * @param null|mixed $default
+     * @return null|mixed
+     */
+    public function get($key, $default = null)
+    {
+        return array_key_exists($key, $_SESSION) ? $_SESSION[$key] : $default;
+    }
+
+    /**
+     * @param string $key
+     */
+    public function delete($key)
+    {
+        if (array_key_exists($key, $_SESSION)) {
+            unset($_SESSION[$key]);
+        }
+    }
+
+    /**
+     * @param string $key
      * @param string $message
      */
     public function addFlash($key, $message)
     {
-        $_SESSION[$key] = $message;
+        $this->set($key, $message);
     }
 
     /**
@@ -46,10 +75,10 @@ class Session
     {
         $flash = null;
         if ($this->hasFlash($key)) {
-            $flash = $_SESSION[$key];
+            $flash = $this->get($key);
 
             if ($clear) {
-                unset($_SESSION[$key]);
+                $this->delete($key);
             }
         }
 

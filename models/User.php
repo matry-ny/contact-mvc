@@ -3,6 +3,7 @@
 namespace models;
 
 use components\Model;
+use components\web\Authorizable;
 
 /**
  * Class User
@@ -17,7 +18,7 @@ use components\Model;
  * @property string $created_at
  * @property string $updated_at
  */
-class User extends Model
+class User extends Model implements Authorizable
 {
     /**
      * @var string
@@ -42,4 +43,29 @@ class User extends Model
         'created_at' => null,
         'updated_at' => null
     ];
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $token
+     */
+    public function setAuthToken($token)
+    {
+        $this->load(['auth_token' => $token]);
+        $this->save();
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthToken()
+    {
+        return $this->auth_token;
+    }
 }

@@ -19,7 +19,7 @@ class m1502534894_init_users_table extends Model
             'name VARCHAR(255) NOT NULL',
             'email VARCHAR(255) NOT NULL',
             'password VARCHAR(32) NOT NULL',
-            'auth_token VARCHAR(32) NOT NULL',
+            'auth_token VARCHAR(32)',
             'is_admin INT(1)',
             'created_at DATETIME',
             'updated_at DATETIME',
