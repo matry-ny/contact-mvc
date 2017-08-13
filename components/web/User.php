@@ -11,6 +11,14 @@ use components\Registry;
 class User
 {
     /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->getModel()->getId();
+    }
+
+    /**
      * @return bool
      */
     public function getIsGuest()

@@ -15,6 +15,7 @@ class CommentsController extends Controller
     {
         $model = new Comment();
         $model->load($_POST);
+        $model->load(['author' => $this->getUser()->getId()]);
         if ($model->save()) {
             $this->getSession()->addFlash('success', "Comment #{$model->id} has been created successfully");
         } else {

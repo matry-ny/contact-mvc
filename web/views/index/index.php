@@ -35,10 +35,13 @@ use helpers\Url;
             By: <b><?= $record->user_name ?></b>
         </p>
         <p><i><?= nl2br($record->comment) ?></i></p>
+
+        <?php if ($record->author == \components\Registry::get('user')->getId()) : ?>
         <p>
             <a href="<?= Url::prepare("/comments/view/id/{$record->id}") ?>" class="btn btn-xs btn-info">Edit</a>
             <a href="<?= Url::prepare("/comments/delete/id/{$record->id}") ?>" class="btn btn-xs btn-danger">Delete</a>
         </p>
+        <?php endif; ?>
     </div>
     <hr>
 <?php endforeach; ?>

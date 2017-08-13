@@ -207,6 +207,67 @@ abstract class Model
     }
 
     /**
+     * @param string $table
+     * @param string $name
+     * @param string $type
+     * @return \PDOStatement
+     */
+    public function addColumn($table, $name, $type)
+    {
+        $query = "ALTER TABLE {$table} ADD {$name} {$type}";
+        return $this->getDbConnect()->query($query);
+    }
+
+    /**
+     * @param string $table
+     * @param string $name
+     * @return \PDOStatement
+     */
+    public function dropColumn($table, $name)
+    {
+        $query = "ALTER TABLE {$table} DROP COLUMN {$name}";
+        return $this->getDbConnect()->query($query);
+    }
+
+    /**
+     * @param string $table
+     * @param string $name
+     * @param string $column
+     * @param string $refTable
+     * @param string $refColumn
+     * @param string $onDelete
+     * @param string $onUpdate
+     * @return \PDOStatement
+     */
+    public function addForeignKey(
+        $table,
+        $name,
+        $column,
+        $refTable,
+        $refColumn,
+        $onDelete = 'CASCADE',
+        $onUpdate = 'CASCADE'
+    ) {
+        $query = <<<SQL
+ALTER TABLE {$table} 
+  ADD CONSTRAINT {$name} FOREIGN KEY ($column) 
+  REFERENCES {$refTable}({$refColumn}) ON DELETE {$onDelete} ON UPDATE {$onUpdate}
+SQL;
+        return $this->getDbConnect()->query($query);
+    }
+
+    /**
+     * @param string $table
+     * @param string $name
+     * @return \PDOStatement
+     */
+    public function dropForeignKey($table, $name)
+    {
+        $query = "ALTER TABLE {$table} DROP FOREIGN KEY {$name}";
+        return $this->getDbConnect()->query($query);
+    }
+
+    /**
      * @return bool
      */
     public function getIsTableExists()
