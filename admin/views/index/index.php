@@ -1,10 +1,12 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Dmytro Kotenko
- * Date: 8/18/2017
- * Time: 10:15 PM
- *
+ * @var \models\Comment[] $comments
  */
 
-var_dump(23);
+?>
+
+<div class="row">
+    <div class="col-lg-12">
+        <?php var_dump($comments) ?>
+    </div>
+</div>

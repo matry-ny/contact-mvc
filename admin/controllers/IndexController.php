@@ -2,6 +2,7 @@
 
 namespace admin\controllers;
 
+use models\Comment;
 use web\components\Controller;
 
 /**
@@ -12,6 +13,7 @@ class IndexController extends Controller
 {
     public function actionIndex()
     {
-        return $this->render('index');
+        $comments = (new Comment())->find(['is_moderated' => false]);
+        return $this->render('index', ['comments' => $comments]);
     }
 }
