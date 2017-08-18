@@ -13,6 +13,7 @@ use components\web\Dispatcher as WebDispatcher;
 abstract class Application
 {
     const WEB = 'WEB';
+    const ADMIN = 'ADMIN';
     const CONSOLE = 'CONSOLE';
 
     /**
@@ -34,8 +35,7 @@ abstract class Application
     public function run()
     {
         try {
-            $dispatcher = APP_TYPE == self::WEB ? new WebDispatcher() : new ConsoleDispatcher();
-            $answer = (new Router($dispatcher))->run();
+            $answer = (new Router($this->getDispatcher()))->run();
             if (is_string($answer)) {
                 echo $answer;
             } else {
@@ -46,5 +46,18 @@ abstract class Application
         }
 
         exit;
+    }
+
+    /**
+     * @return ConsoleDispatcher|WebDispatcher
+     */
+    private function getDispatcher()
+    {
+        switch (APP_TYPE) {
+            case self::CONSOLE:
+                return new ConsoleDispatcher();
+            default:
+                return new WebDispatcher();
+        }
     }
 }

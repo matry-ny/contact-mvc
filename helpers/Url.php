@@ -2,6 +2,8 @@
 
 namespace helpers;
 
+use components\Application;
+
 /**
  * Class Url
  * @package helpers
@@ -14,13 +16,13 @@ class Url
      */
     public static function prepare($url)
     {
-        $baseUrl = Config::getInstance()->get('baseUrl');
+        $baseUrl = trim(Config::getInstance()->get('baseUrl'), " \t\n\r\0\x0B/");
+        if (APP_TYPE == Application::ADMIN) {
+            $baseUrl .= '/admin';
+        }
 
         if (strpos($url, $baseUrl) !== 0) {
-            $url = vsprintf('/%s/%s', [
-                trim($baseUrl, " \t\n\r\0\x0B/"),
-                trim($url, " \t\n\r\0\x0B/")
-            ]);
+            $url = vsprintf('/%s/%s', [$baseUrl, trim($url, " \t\n\r\0\x0B/")]);
         }
 
         return $url;
@@ -31,11 +33,14 @@ class Url
      */
     public static function getClearAddress()
     {
-        $url = $_SERVER["REQUEST_URI"];
+        $url = trim($_SERVER["REQUEST_URI"], " \t\n\r\0\x0B/");
         $baseUrl = Config::getInstance()->get('baseUrl');
 
         if (strpos($url, $baseUrl) === 0) {
             $url = substr($url, strlen($baseUrl));
+        }
+        if (APP_TYPE == Application::ADMIN && strpos($url, 'admin/') === 0) {
+            $url = substr($url, 6);
         }
 
         return $url;
