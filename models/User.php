@@ -68,4 +68,12 @@ class User extends Model implements Authorizable
     {
         return $this->auth_token;
     }
+
+    /**
+     * @return bool
+     */
+    public function getIsAdmin()
+    {
+        return true === (bool)$this->is_admin;
+    }
 }

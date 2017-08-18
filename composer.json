@@ -1,5 +1,6 @@
 {
   "require": {
-    "twbs/bootstrap": "*"
+    "twbs/bootstrap": "*",
+    "secondtruth/startmin": "*"
   }
 }

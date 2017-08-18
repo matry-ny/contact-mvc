@@ -75,18 +75,22 @@ abstract class Model
     }
 
     /**
-     * @param array|int|string $condition
-     * @return array|Model
+     * @param int|array $condition
+     * @param string $delimiter
+     * @return Model|array
      */
-    public function find($condition)
+    public function find($condition, $delimiter = 'AND')
     {
         if (is_array($condition)) {
             $query = "SELECT * FROM {$this->table}";
             if ($condition) {
-                $query .= ' WHERE';
+                $query .= ' WHERE ';
+                $parts = [];
                 foreach (array_keys($condition) as $key) {
-                    $query .= " {$key} = ?";
+                    $parts[] = "{$key} = ?";
                 }
+
+                $query .= implode(" {$delimiter} ", $parts);
             }
 
             $stmt = $this->getDbConnect()->prepare($query);

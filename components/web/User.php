@@ -2,6 +2,7 @@
 
 namespace components\web;
 
+use components\Application;
 use components\Registry;
 
 /**
@@ -23,7 +24,9 @@ class User
      */
     public function getIsGuest()
     {
-        return empty(Registry::get('session')->get('user'));
+        /** @var Authorizable $user */
+        $user = Registry::get('session')->get('user');
+        return empty($user) || (APP_TYPE == Application::ADMIN && !$user->getIsAdmin());
     }
 
     /**

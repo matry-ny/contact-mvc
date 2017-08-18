@@ -22,4 +22,9 @@ interface Authorizable
      * @return string
      */
     public function getAuthToken();
+
+    /**
+     * @return mixed
+     */
+    public function getIsAdmin();
 }

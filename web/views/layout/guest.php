@@ -8,10 +8,8 @@ use helpers\Url;
  * @var string $content
  */
 
-/** @var \components\Session $session */
-$session = Registry::get('session');
-
 ?>
+
 <html>
 <head>
     <title>Contact form sign in</title>
@@ -24,14 +22,14 @@ $session = Registry::get('session');
 <body>
 <div class="container">
 
-    <?php if ($session->hasFlash('success')) : ?>
+    <?php if (Registry::get('session')->hasFlash('success')) : ?>
         <div class="alert alert-success" role="alert">
-            <?= $session->getFlash('success') ?>
+            <?= Registry::get('session')->getFlash('success') ?>
         </div>
     <?php endif; ?>
-    <?php if ($session->hasFlash('error')) : ?>
+    <?php if (Registry::get('session')->hasFlash('error')) : ?>
         <div class="alert alert-danger" role="alert">
-            <?= $session->getFlash('error') ?>
+            <?= Registry::get('session')->getFlash('error') ?>
         </div>
     <?php endif; ?>
 

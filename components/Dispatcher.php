@@ -43,7 +43,7 @@ abstract class Dispatcher
 
     protected function run()
     {
-        $this->prepareClassName(array_shift($this->attributes));
+        $this->prepareControllerName(array_shift($this->attributes));
         $this->prepareActionName(array_shift($this->attributes));
         $this->prepareParamsArray($this->attributes);
     }
@@ -51,7 +51,7 @@ abstract class Dispatcher
     /**
      * @param string $class
      */
-    protected function prepareClassName($class)
+    protected function prepareControllerName($class)
     {
         switch (APP_TYPE) {
             case Application::WEB:

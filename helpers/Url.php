@@ -16,13 +16,13 @@ class Url
      */
     public static function prepare($url)
     {
-        $baseUrl = trim(Config::getInstance()->get('baseUrl'), " \t\n\r\0\x0B/");
+        $baseUrl = trim(Config::getInstance()->get('baseUrl'), " \t\n\r\0\x0B/") . '/';
         if (APP_TYPE == Application::ADMIN) {
-            $baseUrl .= '/admin';
+            $baseUrl .= 'admin';
         }
 
         if (strpos($url, $baseUrl) !== 0) {
-            $url = vsprintf('/%s/%s', [$baseUrl, trim($url, " \t\n\r\0\x0B/")]);
+            $url = vsprintf('/%s/%s', [trim($baseUrl, " \t\n\r\0\x0B/"), trim($url, " \t\n\r\0\x0B/")]);
         }
 
         return $url;
@@ -39,8 +39,8 @@ class Url
         if (strpos($url, $baseUrl) === 0) {
             $url = substr($url, strlen($baseUrl));
         }
-        if (APP_TYPE == Application::ADMIN && strpos($url, 'admin/') === 0) {
-            $url = substr($url, 6);
+        if (APP_TYPE == Application::ADMIN && strpos($url, 'admin') === 0) {
+            $url = substr($url, 5);
         }
 
         return $url;
