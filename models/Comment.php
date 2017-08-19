@@ -12,6 +12,7 @@ use components\Model;
  * @property string $user_name
  * @property string $comment
  * @property int $author
+ * @property int $is_moderated
  * @property string $created_at
  * @property string $updated_at
  */
@@ -35,6 +36,7 @@ class Comment extends Model
         'user_name' => null,
         'comment' => null,
         'author' => null,
+        'is_moderated' => null,
         'created_at' => null,
         'updated_at' => null
     ];
