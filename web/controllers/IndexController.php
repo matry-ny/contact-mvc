@@ -13,8 +13,8 @@ class IndexController extends Controller
 {
     public function actionIndex()
     {
-        $model = new Comment();
+        $models = (new Comment())->find(['is_moderated' => true]);
 
-        return $this->render('index', ['records' => $model->find([])]);
+        return $this->render('index', ['records' => $models]);
     }
 }

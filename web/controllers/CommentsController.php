@@ -15,7 +15,7 @@ class CommentsController extends Controller
     {
         $model = new Comment();
         $model->load($_POST);
-        $model->load(['author' => $this->getUser()->getId()]);
+        $model->load(['author' => $this->getUser()->getId(), 'is_moderated' => 0]);
         if ($model->save()) {
             $this->getSession()->addFlash('success', "Comment #{$model->id} has been created successfully");
         } else {
@@ -43,6 +43,7 @@ class CommentsController extends Controller
     {
         $model = $this->getModel($id);
         $model->load($_POST);
+        $model->load(['author' => $this->getUser()->getId(), 'is_moderated' => 0]);
 
         if ($model->save()) {
             $this->getSession()->addFlash('success', "Comment #{$id} has been updated successfully");
