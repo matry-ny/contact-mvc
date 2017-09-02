@@ -2,7 +2,6 @@
 
 namespace components\web;
 
-use components\Application;
 use components\Registry;
 
 /**
