@@ -3,6 +3,7 @@
 namespace components;
 
 use helpers\Config;
+use helpers\Strings;
 
 /**
  * Class Controller
@@ -10,6 +11,19 @@ use helpers\Config;
  */
 abstract class Controller
 {
+    /**
+     * @var null|string
+     */
+    private $calledMethod = null;
+
+    /**
+     * @param string $calledMethod
+     */
+    public function setCalledMethod($calledMethod)
+    {
+        $this->calledMethod = $calledMethod;
+    }
+
     /**
      * @return Config
      */
@@ -25,7 +39,24 @@ abstract class Controller
     {
         $classParts = explode('\\', get_called_class());
         $class = end($classParts);
-        $class = substr($class, 0, -10);
-        return ltrim(strtolower(preg_replace('/[A-Z]([A-Z](?![a-z]))*/', '-$0', $class)), '-');
+
+        return Strings::reCamelize(substr($class, 0, -10));
+    }
+
+    /**
+     * @return \components\Router
+     */
+    protected function getRouter()
+    {
+        return Registry::get('router');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCalledMethod()
+    {
+        $calledMethod = $this->getRouter()->getDispatcher()->getAction();
+        return Strings::reCamelize(substr($calledMethod, 6));
     }
 }

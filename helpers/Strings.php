@@ -21,4 +21,13 @@ class Strings
 
         return implode($nameParts);
     }
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    public static function reCamelize($name)
+    {
+        return ltrim(strtolower(preg_replace('/[A-Z]([A-Z](?![a-z]))*/', '-$0', $name)), '-');
+    }
 }

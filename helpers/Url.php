@@ -42,6 +42,9 @@ class Url
         if (APP_TYPE == Application::ADMIN && strpos($url, 'admin') === 0) {
             $url = substr($url, 5);
         }
+        if (APP_TYPE == Application::API && strpos($url, 'api') === 0) {
+            $url = substr($url, 3);
+        }
 
         return $url;
     }

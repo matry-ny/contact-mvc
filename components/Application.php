@@ -15,6 +15,7 @@ abstract class Application
     const WEB = 'WEB';
     const ADMIN = 'ADMIN';
     const CONSOLE = 'CONSOLE';
+    const API = 'API';
 
     /**
      * Application constructor.
@@ -30,12 +31,15 @@ abstract class Application
             Config::getInstance()->get('db.password'),
             Config::getInstance()->get('db.name')
         ));
+
+        $router = new Router($this->getDispatcher());
+        Registry::set('router', $router);
     }
 
     public function run()
     {
         try {
-            $answer = (new Router($this->getDispatcher()))->run();
+            $answer = Registry::get('router')->run();
             if (is_string($answer)) {
                 echo $answer;
             } else {

@@ -8,6 +8,9 @@ namespace helpers;
  */
 class Request
 {
+    const GET = 'GET';
+    const POST = 'POST';
+
     /**
      * @param null|string $key
      * @param null|mixed $default
@@ -34,5 +37,14 @@ class Request
         }
 
         return $_POST;
+    }
+
+    /**
+     * @param string $header
+     * @return mixed
+     */
+    public static function getHeader($header)
+    {
+        return ArrayHelper::getValue(getallheaders(), $header);
     }
 }

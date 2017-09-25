@@ -60,6 +60,9 @@ abstract class Dispatcher
             case Application::ADMIN:
                 $namespace = 'admin';
                 break;
+            case Application::API:
+                $namespace = 'api';
+                break;
             case Application::CONSOLE:
                 $namespace = 'console';
                 break;

@@ -23,6 +23,14 @@ final class Router
     }
 
     /**
+     * @return Dispatcher
+     */
+    public function getDispatcher()
+    {
+        return $this->dispatcher;
+    }
+
+    /**
      * @return mixed
      */
     public function run()
@@ -36,28 +44,28 @@ final class Router
      */
     private function runAction()
     {
-        if (!class_exists($this->dispatcher->getController())) {
-            throw new \Exception("Class '{$this->dispatcher->getController()}' is undefined");
+        if (!class_exists($this->getDispatcher()->getController())) {
+            throw new \Exception("Class '{$this->getDispatcher()->getController()}' is undefined");
         }
 
-        $controller = $this->dispatcher->getController();
+        $controller = $this->getDispatcher()->getController();
         $controllerObject = new $controller();
 
-        if (!method_exists($controllerObject, $this->dispatcher->getAction())) {
+        if (!method_exists($controllerObject, $this->getDispatcher()->getAction())) {
             $message = vsprintf('Action "%s" is not allowed for class "%s"', [
-                $this->dispatcher->getAction(),
-                $this->dispatcher->getController()
+                $this->getDispatcher()->getAction(),
+                $this->getDispatcher()->getController()
             ]);
             throw new \Exception($message);
         }
 
         $params = $this->getArgumentsArray(
             $controllerObject,
-            $this->dispatcher->getAction(),
-            $this->dispatcher->getParams()
+            $this->getDispatcher()->getAction(),
+            $this->getDispatcher()->getParams()
         );
 
-        return call_user_func_array([$controllerObject, $this->dispatcher->getAction()], $params);
+        return call_user_func_array([$controllerObject, $this->getDispatcher()->getAction()], $params);
     }
 
     /**
