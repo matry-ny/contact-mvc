@@ -36,7 +36,7 @@ class Url
         $url = trim($_SERVER["REQUEST_URI"], " \t\n\r\0\x0B/");
         $baseUrl = trim(Config::getInstance()->get('baseUrl'), " \t\n\r\0\x0B/");
 
-        if (strpos($url, $baseUrl) === 0) {
+        if ($baseUrl && strpos($url, $baseUrl) === 0) {
             $url = trim(substr($url, strlen($baseUrl)), " \t\n\r\0\x0B/");
         }
         if (APP_TYPE == Application::ADMIN && strpos($url, 'admin') === 0) {

@@ -40,6 +40,7 @@ abstract class Application
     {
         try {
             $answer = Registry::get('router')->run();
+            $answer = APP_TYPE == self::API ? json_encode($answer) : $answer;
             if (is_string($answer)) {
                 echo $answer;
             } else {

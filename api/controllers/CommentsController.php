@@ -5,6 +5,7 @@ namespace api\controllers;
 use components\api\Controller;
 use helpers\Behaviors;
 use helpers\Request;
+use models\Comment;
 
 /**
  * Class CommentsController
@@ -24,8 +25,19 @@ class CommentsController extends Controller
         ];
     }
 
+    /**
+     * @param int $userId
+     * @return array
+     */
     public function actionGetCommentsByUserId($userId)
     {
-        var_dump($userId);
+        $comments = (new Comment())->find(['author' => $userId]);
+        $result = [];
+        foreach ($comments as $comment) {
+            /** @var Comment $comment */
+            $result[] = $comment->getAttributes();
+        }
+
+        return $result;
     }
 }

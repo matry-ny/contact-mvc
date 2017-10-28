@@ -28,6 +28,14 @@ abstract class Model
      */
     private $oldAttributes = [];
 
+    /**
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
     public function __set($name, $value)
     {
         if (isset($this->{$name})) {
